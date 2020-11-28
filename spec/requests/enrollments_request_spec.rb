@@ -20,8 +20,5 @@ RSpec.describe "Enrollments", type: :request do
       expect(Enrollment.first.teacher.email).to eq(teacher.email)
       expect(flash[:notice]).to eq('You have been enrolled in the course successfully')
     end
-    it 'can see the votes in the list of enrollments' do
-      
-    end
   end
 end

@@ -3,4 +3,6 @@ class Course < ApplicationRecord
   
   has_many :enrollments
   has_many :teachers, through: :enrollments
+
+  acts_as_votable
 end

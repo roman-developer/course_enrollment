@@ -2,11 +2,16 @@ require 'rails_helper'
 
 RSpec.describe "Teachers", type: :request do
   describe 'as a teacher' do
-    it 'can vote another teacher once' do
-      
-    end
-    it 'can vote to myself once' do
-      
+    let!(:teacher) { FactoryBot.create(:teacher) } # teacher who is voted
+    let!(:voter) { FactoryBot.create(:teacher, email: "voter@mail.com") } # teacher who is voting
+    it 'can vote a teacher once' do
+      expect {
+        post "/teachers/#{teacher.id}/vote", params: { email: voter.email }
+      }.to change { teacher.get_likes.size }.from(0).to(1)
+      expect(JSON.parse(response.body).with_indifferent_access[:message]).to eq('like successfull')
+      # if the teacher try to repeat voting the same again, it is not valid
+      post "/teachers/#{teacher.id}/vote", params: { email: voter.email }
+      expect(JSON.parse(response.body).with_indifferent_access[:message]).to eq('like not successfull')
     end
   end
 end

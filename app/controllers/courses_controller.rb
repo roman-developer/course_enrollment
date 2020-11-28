@@ -15,6 +15,18 @@ class CoursesController < ApplicationController
     end
   end
 
+  def vote
+    @course = Course.where(id: params[:id]).first
+    voter = Teacher.where(email: params[:email]).first
+    check_voter = voter.voted_for? @course if (@course && voter).present?
+
+    unless check_voter
+      @course.liked_by voter 
+      return render(json: {message: "like successfull" }, status: 200)
+    end
+    return render(json: {message: "like not successfull" }, status: 200)
+  end
+
   private
 
   def course_params
