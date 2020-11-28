@@ -1,5 +1,28 @@
 
 <h1>List of enrollments</h1>
-<% @enrollments.each do|enrollment| %>
-  <p><%= enrollment.course.title %> | <%= enrollment.teacher.email %></p>
-<% end %>
+
+<table>
+  <tr>
+    <th>Course</th>
+    <th>Teacher</th> 
+  </tr>
+  <% @enrollments.each do|enrollment| %>
+    <tr>
+      <td>
+        <p><%= enrollment.course.title %></p>
+        <p>
+          <%= link_to 'Enroll',  new_enrollment_path(course_id: enrollment.course.id) %>
+          <%= link_to 'Vote',  '#' %>
+        </p>
+      </td>
+      <td>
+        <% enrollment.course.teachers.each do|teacher| %>
+          <p><%= teacher.email %></p>
+          <p><%= link_to 'Vote',  '#' %></p>
+        <% end %>
+      </td> 
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to 'Create course',  new_course_path %>

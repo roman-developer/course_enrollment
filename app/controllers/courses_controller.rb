@@ -1,4 +1,5 @@
 class CoursesController < ApplicationController
+  before_action :get_teacher, only: [:create]
 
   def new
     @course = Course.new
@@ -7,9 +8,11 @@ class CoursesController < ApplicationController
   def create
     @course = Course.new(course_params)
 
-    if @course.save && params[:email].present?
-      enrolling_teacher_course(params[:email], @course)
-      redirect_to root_path, notice: 'The course was created successfully'
+    if @teacher.persisted?
+      if @course.save
+        enrolling_teacher_course( @course)
+        redirect_to root_path, notice: 'The course was created successfully'
+      end
     else
       render 'new'
     end
@@ -33,8 +36,11 @@ class CoursesController < ApplicationController
     params.require(:course).permit(:title)
   end
 
-  def enrolling_teacher_course(email, course)
-    teacher = Teacher.where(email: email).first_or_create if email.present?
-    Enrollment.create(teacher: teacher, course: course)
+  def get_teacher
+    @teacher = Teacher.where(email: params[:email]).first_or_create if params[:email]
+  end
+
+  def enrolling_teacher_course(course)
+    Enrollment.create(teacher: @teacher, course: course)
   end
 end

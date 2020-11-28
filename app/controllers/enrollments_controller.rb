@@ -1,7 +1,8 @@
 class EnrollmentsController < ApplicationController
+  before_action :get_teacher, only: [:create]
 
   def index
-    @enrollments = Enrollment.all
+    @enrollments = Enrollment.group(:course_id)
   end
 
   def new
@@ -10,10 +11,13 @@ class EnrollmentsController < ApplicationController
 
   def create
     @enrollment = Enrollment.new(enrollment_params)
-    enroll_teacher(params[:email]) if params[:email].present?
-
-    if @enrollment.save && @teacher.present?
-      redirect_to root_path, notice: 'You have been enrolled in the course successfully'
+    if @teacher.persisted?
+      enroll_teacher(params[:email])
+      if @enrollment.save 
+        redirect_to root_path, notice: 'You have been enrolled in the course successfully'
+      else
+        render 'new', alert: @enrollment.errors
+      end
     else
       render 'new'
     end
@@ -26,8 +30,10 @@ class EnrollmentsController < ApplicationController
   end
 
   def enroll_teacher(email)
-    @teacher = Teacher.where(email: email).first_or_create
     @enrollment.teacher_id = @teacher.id
   end
 
+  def get_teacher
+    @teacher = Teacher.where(email: params[:email]).first_or_create if params[:email]
+  end
 end
