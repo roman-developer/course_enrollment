@@ -1,6 +1,7 @@
 
 <h1>List of enrollments</h1>
 
+<%= link_to 'Create course', new_course_path %>
 <table>
   <tr>
     <th>Course</th>
@@ -9,20 +10,22 @@
   <% @enrollments.each do|enrollment| %>
     <tr>
       <td>
-        <p><%= enrollment.course.title %> | votes: <%= enrollment.course.votes_for.size %></p>
+        <p><%= link_to enrollment.course.title, course_path(enrollment.course.id) %> | votes: <%= enrollment.course.votes_for.size %></p>
         <p>
           <%= link_to 'Enroll',  new_enrollment_path(course_id: enrollment.course.id) %>
           <%= link_to 'Vote',  new_vote_course_path(enrollment.course.id) %>
         </p>
       </td>
       <td>
-        <% enrollment.course.teachers.each do|teacher| %>
+        <% enrollment.course.teachers.more_voted.each do|teacher| %>
           <p><%= teacher.email %> | votes: <%= teacher.votes_for.size %></p>
-          <p><%= link_to 'Vote',  new_vote_teacher_path(teacher.id) %></p>
+          <p><%= link_to 'Vote', new_vote_teacher_path(teacher.id) %></p>
         <% end %>
+        <% if enrollment.course.teachers.count_voted > enrollment.course.teachers.more_voted.size %>
+            <p><%= link_to 'View more', course_path(enrollment.course.id) %></p>
+          <% end %>
       </td> 
     </tr>
   <% end %>
 </table>
-
-<%= link_to 'Create course',  new_course_path %>
+<%= paginate @enrollments %>

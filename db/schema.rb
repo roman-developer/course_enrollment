@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_28_154349) do
+ActiveRecord::Schema.define(version: 2020_11_29_114930) do
 
   create_table "courses", force: :cascade do |t|
     t.string "title", null: false
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 2020_11_28_154349) do
     t.string "email", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "cached_votes_total", default: 0
+    t.integer "cached_votes_score", default: 0
   end
 
   create_table "votes", force: :cascade do |t|

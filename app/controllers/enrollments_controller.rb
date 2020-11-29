@@ -2,7 +2,7 @@ class EnrollmentsController < ApplicationController
   before_action :get_teacher, only: [:create]
 
   def index
-    @enrollments = Enrollment.group(:course_id)
+    @enrollments = Enrollment.group(:course_id).page(params[:page])
   end
 
   def new
@@ -33,7 +33,4 @@ class EnrollmentsController < ApplicationController
     @enrollment.teacher_id = @teacher.id
   end
 
-  def get_teacher
-    @teacher = Teacher.where(email: params[:email]).first_or_create if params[:email]
-  end
 end

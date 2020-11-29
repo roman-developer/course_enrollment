@@ -1,0 +1,11 @@
+<h1>Course: "<%= @course.title %>"</h1>
+<h2>List of teachers enrolled</h2>
+<ul>
+  <% @course.teachers.ordered_by_vote.each do|teacher| %>
+    <li>
+      <p><%= teacher.email %> | votes: <%= teacher.votes_for.size %></p>
+      <p><%= link_to 'Vote',  new_vote_teacher_path(teacher.id) %></p>
+    </li>
+  <% end %>
+</ul>
+<%= link_to 'Back', root_path %>
