@@ -8,7 +8,7 @@ RSpec.describe "Teachers", type: :request do
       expect {
         post "/teachers/#{teacher.id}/vote", params: { email: voter.email }
       }.to change { teacher.get_likes.size }.from(0).to(1)
-      expect(flash[:notice]).to eq('like successfull')
+      expect(flash[:notice]).to eq('vote successfull')
       # if the teacher try to repeat voting the same again, it is not valid
       post "/teachers/#{teacher.id}/vote", params: { email: voter.email }
       expect(teacher.get_likes.size).to eq(1)

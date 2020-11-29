@@ -11,9 +11,9 @@ class TeachersController < ApplicationController
       check_voter = @teacher.voted_for? @teacher_voted 
       unless check_voter
         @teacher_voted.liked_by @teacher
-        redirect_to root_path, notice: "like successfull"
+        redirect_to root_path, notice: "vote successfull"
       else
-        render 'new_vote', alert: @teacher_voted.errors.add(:like, "not successfull! This teacher has already voted")
+        render 'new_vote', alert: @teacher_voted.errors.add(:vote, "not successfull! This teacher has already voted")
       end
     else
       render 'new_vote'

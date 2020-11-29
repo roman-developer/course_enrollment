@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :teacher do
-    email { "MyString" }
+    email { "test@mail.com" }
   end
 end

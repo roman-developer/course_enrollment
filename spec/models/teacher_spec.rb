@@ -9,6 +9,10 @@ RSpec.describe Teacher, type: :model do
     teacher = FactoryBot.build(:teacher, email: nil)
     expect(teacher).to_not be_valid
   end
+  it "is not valid with a wrong email address" do
+    teacher = FactoryBot.build(:teacher, email: '@hola!')
+    expect(teacher).to_not be_valid
+  end
   it "is not valid with a repeated email" do
     teacher1 = FactoryBot.create(:teacher, email: 'teacher@mail.com')
     teacher2 = FactoryBot.build(:teacher, email: 'teacher@mail.com')

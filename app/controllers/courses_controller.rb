@@ -8,11 +8,12 @@ class CoursesController < ApplicationController
 
   def create
     @course = Course.new(course_params)
-
     if @teacher.persisted?
       if @course.save
         enrolling_teacher_course( @course)
         redirect_to root_path, notice: 'The course was created successfully'
+      else
+        render 'new', alert: @course.errors
       end
     else
       render 'new'
@@ -27,9 +28,9 @@ class CoursesController < ApplicationController
       check_voter = @teacher.voted_for?(@course) 
       unless check_voter
         @course.liked_by @teacher 
-        redirect_to root_path, notice: "like successfull"
+        redirect_to root_path, notice: "vote successfull"
       else
-        render 'new_vote', alert: @course.errors.add(:like, "not successfull! This teacher has already voted")
+        render 'new_vote', alert: @course.errors.add(:vote, "not successfull! This teacher has already voted")
       end
     else
       render 'new_vote'
