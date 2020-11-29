@@ -23,7 +23,7 @@ class CoursesController < ApplicationController
 
   def vote
     if (@course && @teacher).persisted?
-      # check_voter = check if a voter (teacher) has voted on a course
+      # check_voter = check if a voter (@teacher) has voted on a course
       check_voter = @teacher.voted_for?(@course) 
       unless check_voter
         @course.liked_by @teacher 
@@ -47,7 +47,7 @@ class CoursesController < ApplicationController
   end
 
   def get_course
-    @course = Course.where(id: params[:id]).first
+    @course = Course.where(id: params[:id]).first if params[:id]
   end
 
   def enrolling_teacher_course(course)

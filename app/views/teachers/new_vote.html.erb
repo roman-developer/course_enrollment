@@ -1,0 +1,5 @@
+<h1>Vote the teacher "<%= @teacher_voted.email %>"</h1>
+
+<%= render 'votes/form', item: @teacher_voted %>
+
+<%= link_to 'Back', root_path %>
