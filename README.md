@@ -1,24 +1,29 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Course enrollment
 
-Things you may want to cover:
+This application is based on the following acceptance criteria:
+- As a teacher, I should be able to create new courses.
+- As a teacher, I should be able to enroll in several courses created by other teachers.
+- As a teacher, I should be able to see a list of enrollments.
+- As a teacher, I should be able to vote for another teacher once.
+- As a teacher, I should be able to vote for a course once.
+- As a teacher, I should be able to see the votes in the enrollment list.
 
-* Ruby version
+## Tech/framework used
 
-* System dependencies
+- Ruby version: 2.7.1
+- Rails version: 6.0.3.4
+- Database: Sqlite 3.28.0
 
-* Configuration
+## Installation
 
-* Database creation
+1. Install [Ruby on Rails](https://edgeguides.rubyonrails.org/getting_started.html#creating-a-new-rails-project-installing-rails)
+2. Clone this repository.
+3. Database set up:
+- Create the database `rails db:create`
+- Run migrations `rails db:migrate`
 
-* Database initialization
+## Test
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`bundle exec rspec`
