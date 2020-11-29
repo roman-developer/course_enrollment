@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
-  before_action :get_teacher, only: [:create]
+  before_action :get_teacher, only: [:create, :vote]
+  before_action :get_course, only: [:new_vote, :vote]
 
   def new
     @course = Course.new
@@ -18,16 +19,21 @@ class CoursesController < ApplicationController
     end
   end
 
-  def vote
-    @course = Course.where(id: params[:id]).first
-    voter = Teacher.where(email: params[:email]).first
-    check_voter = voter.voted_for? @course if (@course && voter).present?
+  def new_vote ; end
 
-    unless check_voter
-      @course.liked_by voter 
-      return render(json: {message: "like successfull" }, status: 200)
-    end
-    return render(json: {message: "like not successfull" }, status: 200)
+  def vote
+    if (@course && @teacher).persisted?
+      # check_voter = check if a voter (teacher) has voted on a course
+      check_voter = @teacher.voted_for?(@course) 
+      unless check_voter
+        @course.liked_by @teacher 
+        redirect_to root_path, notice: "like successfull"
+      else
+        render 'new_vote', alert: @course.errors.add(:like, "not successfull! This teacher has already voted")
+      end
+    else
+      render 'new_vote'
+    end    
   end
 
   private
@@ -38,6 +44,10 @@ class CoursesController < ApplicationController
 
   def get_teacher
     @teacher = Teacher.where(email: params[:email]).first_or_create if params[:email]
+  end
+
+  def get_course
+    @course = Course.where(id: params[:id]).first
   end
 
   def enrolling_teacher_course(course)

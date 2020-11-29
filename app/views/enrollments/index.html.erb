@@ -9,10 +9,10 @@
   <% @enrollments.each do|enrollment| %>
     <tr>
       <td>
-        <p><%= enrollment.course.title %></p>
+        <p><%= enrollment.course.title %> | votes: <%= enrollment.course.votes_for.size %></p>
         <p>
           <%= link_to 'Enroll',  new_enrollment_path(course_id: enrollment.course.id) %>
-          <%= link_to 'Vote',  '#' %>
+          <%= link_to 'Vote',  new_vote_course_path(enrollment.course.id) %>
         </p>
       </td>
       <td>
